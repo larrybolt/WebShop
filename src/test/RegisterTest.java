@@ -21,6 +21,7 @@ public class RegisterTest {
 		driver.get("http://localhost:8080/week01Users/Controller?action=signUp");
 	}
 	
+	
 	@After
 	public void clean() {
 		driver.quit();
