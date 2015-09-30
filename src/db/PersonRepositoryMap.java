@@ -1,14 +1,16 @@
-package domain;
+package db;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PersonRepository {
+import domain.Person;
+
+public class PersonRepositoryMap implements PersonRepository {
 	private Map<String, Person> persons = new HashMap<String, Person>();
 	
-	public PersonRepository () {
+	public PersonRepositoryMap () {
 		Person administrator = new Person("admin@ucll.be", "t", "Ad", "Ministrator");
 		add(administrator);
 	}

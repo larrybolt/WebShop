@@ -1,9 +1,11 @@
 package domain;
-
 import java.util.List;
 
+import db.PersonRepository;
+import db.PersonRepositoryMap;
+
 public class PersonService {
-	private PersonRepository personRepository = new PersonRepository();
+	private PersonRepository personRepository = new PersonRepositoryMap();
 
 	public PersonService(){
 	}
