@@ -1,5 +1,7 @@
 package controller;
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,9 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import domain.Person;
+import domain.PersonService;
+
 @WebServlet("/Controller")	
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private PersonService ps= new PersonService();
        
     public Controller() {
         super();
@@ -22,15 +28,63 @@ public class Controller extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter()
-		.append("Served at: ")
-		.append(request.getContextPath())
-		.append("\r\naction: ")
-		.append(request.getParameter("action"));
+		procesRequest(request,response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		procesRequest(request, response);
+	}
+	protected void procesRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+		String destination = "index.jsp";
+		String action = request.getParameter("action");
+		if (action == null)
+			request.getRequestDispatcher(destination).forward(request, response);
+
+		if(action.equals("overview")){
+			destination = showPersons(request,response);
+		}
+		if(action.equals("add")){
+			destination = addPerson(request,response);
+		}
+		if(action.equals("delete")){
+			destination = deletePerson(request,response);
+		}
+		if(action.equals("signUp")){
+			destination = "signUp.jsp";
+		}
+		/*if(action.equals("deleteConfirmed")){
+			destination = deletePersonConfirmed(request,response);
+		}*/
+		/*if(action.equals("find")){
+			destination = findPerson(request,response);
+		}*/
+		
+		RequestDispatcher view = request.getRequestDispatcher(destination);
+
+		view.forward(request, response);
+		
+	}
+	
+
+	private String deletePerson(HttpServletRequest request, HttpServletResponse response) {
+		ps.deletePerson(request.getParameter("email"));
+		return "overview.jsp";
 	}
 
+	private String addPerson(HttpServletRequest request, HttpServletResponse response) {
+		String lastName = request.getParameter("lastName");
+		String firstName = request.getParameter("firstName");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		Person p = new Person(email,password,firstName,lastName);
+		ps.addPerson(p);
+		return "overview.jsp";
+	}
+
+	private String showPersons(HttpServletRequest request, HttpServletResponse response) {
+		request.setAttribute("persons",ps.getPersons() );
+		return "overview.jsp";
+	}
 }
+
+	
