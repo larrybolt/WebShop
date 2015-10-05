@@ -1,4 +1,4 @@
-<%@include file="header.jspf"%>
+<jsp:include page="header.jspf"/>
 <main>
 	<div class="alert-danger">
 	<c:forEach var="errorMsg" items="${errorMsg}">
@@ -21,4 +21,4 @@
         
     </form>
 </main>
-<%@include file="footer.jspf"%>
+<jsp:include page="footer.jspf"/>

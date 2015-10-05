@@ -1,6 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@include file="header.jspf"%>
-
+<jsp:include page="header.jspf"/>
 <main>
 <table>
 <tr>
@@ -17,4 +16,4 @@
 </table>
 
 </main>
-<%@include file="footer.jspf"%>
+<jsp:include page="footer.jspf"/>
