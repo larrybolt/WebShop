@@ -2,15 +2,13 @@
 <jsp:include page="header.jspf"/>
 <main>
 
-	<c:if test="${errorMsg }">
-	<div class="alert-danger">
 	<c:forEach var="errorMsg" items="${errorMsg}">
+	<div class="alert-danger">
 		<ul>
 			<li>${errorMsg}</li>
 		</ul>
-		</c:forEach>
 	</div>
-	</c:if>
+	</c:forEach>
 
     <form method="post" action="Controller?action=add" novalidate="novalidate">
     	<!-- novalidate in order to be able to run tests correctly -->
