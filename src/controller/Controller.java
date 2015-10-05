@@ -1,7 +1,6 @@
 package controller;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import domain.Person;
 import domain.PersonService;
 
@@ -39,10 +37,10 @@ public class Controller extends HttpServlet {
 		String destination = "index.jsp";
 		String action = request.getParameter("action");
 
-		if (action == null)
+		if (action == null) {
 			request.getRequestDispatcher(destination).forward(request, response);
-			
-		
+			return;
+		}
 
 		if(action.equals("overview")){
 			destination = showPersons(request,response);
