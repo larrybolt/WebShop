@@ -37,8 +37,11 @@ public class Controller extends HttpServlet {
 	protected void procesRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
 		String destination = "index.jsp";
 		String action = request.getParameter("action");
-		if (action == null)
+
+		if (action == null){
 			request.getRequestDispatcher(destination).forward(request, response);
+			return;
+		}
 
 		if(action.equals("overview")){
 			destination = showPersons(request,response);
