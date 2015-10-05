@@ -43,7 +43,7 @@ nav ul li a{
 	display: block;
 }
 
-nav ul li#actual {
+nav ul li.current {
 	background-color: #f3dc04;
 }
 
