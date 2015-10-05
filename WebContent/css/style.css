@@ -196,6 +196,10 @@ input {
 	
 }
 
+table td {
+	vertical-align: middle;
+}
+
 /*
 d3bb03 green
 977007 brown

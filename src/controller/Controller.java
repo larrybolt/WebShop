@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import domain.Person;
 import domain.PersonService;
+import domain.ProductService;
 
 @WebServlet("/Controller")	
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PersonService ps= new PersonService();
+	private ProductService products = new ProductService();
        
     public Controller() {
         super();
@@ -44,6 +46,9 @@ public class Controller extends HttpServlet {
 
 		if(action.equals("overview")){
 			destination = showPersons(request,response);
+		}
+		if(action.equals("products")){
+			destination = showProducts(request,response);
 		}
 		if(action.equals("add")){
 			destination = addPerson(request,response);
@@ -97,6 +102,10 @@ public class Controller extends HttpServlet {
 	private String showPersons(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("persons",ps.getPersons() );
 		return "overview.jsp";
+	}
+	private String showProducts(HttpServletRequest request, HttpServletResponse response) {
+		request.setAttribute("products",products.getProducts());
+		return "products/overview.jsp";
 	}
 }
 
