@@ -1,5 +1,8 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="header.jspf"/>
 <main>
+
+	<c:if test="${errorMsg }">
 	<div class="alert-danger">
 	<c:forEach var="errorMsg" items="${errorMsg}">
 		<ul>
@@ -7,6 +10,7 @@
 		</ul>
 		</c:forEach>
 	</div>
+	</c:if>
 
     <form method="post" action="Controller?action=add" novalidate="novalidate">
     	<!-- novalidate in order to be able to run tests correctly -->
