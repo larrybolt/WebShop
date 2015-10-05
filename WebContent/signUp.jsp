@@ -1,9 +1,11 @@
 <%@include file="header.jspf"%>
 <main>
 	<div class="alert-danger">
+	<c:forEach var="errorMsg" items="${errorMsg}">
 		<ul>
-			<li>Some error</li>
+			<li>${errorMsg}</li>
 		</ul>
+		</c:forEach>
 	</div>
 
     <form method="post" action="Controller?action=add" novalidate="novalidate">

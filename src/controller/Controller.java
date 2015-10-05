@@ -1,5 +1,6 @@
 package controller;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -72,13 +73,24 @@ public class Controller extends HttpServlet {
 	}
 
 	private String addPerson(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<String> errorMsg = new ArrayList<String>();
 		String lastName = request.getParameter("lastName");
 		String firstName = request.getParameter("firstName");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		Person p = new Person(email,password,firstName,lastName);
-		ps.addPerson(p);
-		return "overview.jsp";
+		try{
+			Person p = new Person(email,password,firstName,lastName);
+			ps.addPerson(p);
+		}
+		catch(Exception e){
+			errorMsg.add(e.getMessage());
+		}
+		
+		if(errorMsg.size()==0){
+			return showPersons(request, response);
+		}
+		request.setAttribute("errorMsg", errorMsg);
+		return "signUp.jsp";
 	}
 
 	private String showPersons(HttpServletRequest request, HttpServletResponse response) {
