@@ -39,10 +39,10 @@ public class Controller extends HttpServlet {
 		String destination = "index.jsp";
 		String action = request.getParameter("action");
 
-		if (action == null){
+		if (action == null)
 			request.getRequestDispatcher(destination).forward(request, response);
-			return;
-		}
+			
+		
 
 		if(action.equals("overview")){
 			destination = showPersons(request,response);
