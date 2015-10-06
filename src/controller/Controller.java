@@ -59,6 +59,15 @@ public class Controller extends HttpServlet {
 		if(action.equals("signUp")){
 			destination = "signUp.jsp";
 		}
+		if(action.equals("deleteProduct")){
+			if (request.getMethod().equals("GET")) {
+				request.setAttribute("product", products.getProduct(request.getParameter("id")));
+				request.getRequestDispatcher("products/confirmDelete.jsp").forward(request, response);
+				return;
+			} else {
+				destination = deleteProduct(request,response);
+			}
+		}
 		/*if(action.equals("deleteConfirmed")){
 			destination = deletePersonConfirmed(request,response);
 		}*/
@@ -104,6 +113,11 @@ public class Controller extends HttpServlet {
 		return "overview.jsp";
 	}
 	private String showProducts(HttpServletRequest request, HttpServletResponse response) {
+		request.setAttribute("products",products.getProducts());
+		return "products/overview.jsp";
+	}
+	private String deleteProduct(HttpServletRequest request, HttpServletResponse response) {
+		products.deleteProduct(request.getParameter("id"));
 		request.setAttribute("products",products.getProducts());
 		return "products/overview.jsp";
 	}

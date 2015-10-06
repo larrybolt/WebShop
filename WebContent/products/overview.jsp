@@ -6,12 +6,14 @@
 <th></th>
 <th>Description</th>
 <th>Price</th>
+<th></th>
 </tr>
 <c:forEach var="product" items="${products}">
 <tr>
 <td><img src="${product.imgUrl}" alt="" style="max-width: 100px;"/></td>
 <td>${product.description}</td>
 <td>${product.price }</td>
+<td><a href="?action=deleteProduct&id=${product.id}">x</a></td>
 </tr>
 </c:forEach>
 <caption>Product Overview</caption>
