@@ -23,6 +23,13 @@ public class ProductRepositoryMap implements ProductRepository {
 				68.35, 
 				"https://2.assets.torfs.be/products/155137/taupe-sneaker-fred-perry-155137-zij-440x440-1423198801.jpg"
 				));
+		add(new Product(
+				"CognacEnkellaarsTommyHilfiger", 
+				"Cognac Enkellaars Tommy Hilfiger", 
+				180.00, 
+				"https://www.torfs.be/cognac-tommy-hilfiger-enkellaars-147514"
+				));
+		
 	}
 	
 	public Product get(String ProductId){
