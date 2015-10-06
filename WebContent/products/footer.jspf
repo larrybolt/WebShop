@@ -1,5 +1,5 @@
 <footer>
-	
+	<a href="Controller?action=productForm">voeg product toe</a>
 	&copy; Webontwikkeling 3, UC Leuven-Limburg
 </footer>
 </div>

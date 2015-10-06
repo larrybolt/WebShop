@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import domain.Person;
 import domain.PersonService;
+import domain.Product;
 import domain.ProductService;
 
 @WebServlet("/Controller")	
@@ -65,6 +66,15 @@ public class Controller extends HttpServlet {
 		/*if(action.equals("find")){
 			destination = findPerson(request,response);
 		}*/
+		if(action.equals("productForm")){
+			destination = "form.jsp";
+		}
+		if(action.equals("addProduct")){
+			destination = addProduct(request,response);
+		}
+		if(action.equals("deleteProduct")){
+			destination = deleteProduct(request,response);
+		}
 		
 		RequestDispatcher view = request.getRequestDispatcher(destination);
 
@@ -72,6 +82,28 @@ public class Controller extends HttpServlet {
 		
 	}
 	
+
+	private String deleteProduct(HttpServletRequest request, HttpServletResponse response) {
+		products.deleteProduct(request.getParameter("ID"));
+		return showProducts(request,response);
+	}
+
+	private String addProduct(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<String> errorMsg = new ArrayList<String>();
+		String id = request.getParameter("ID");
+		String description = request.getParameter("description");
+		double price = Double.parseDouble(request.getParameter("price"));
+		String url = request.getParameter("url");
+		try{
+			products.addProduct(new Product(id,description,price,url));
+		}
+		catch(Exception e){
+			errorMsg.add(e.getMessage());
+			request.setAttribute("errorMsg", errorMsg);
+			return "form.jsp";
+		}
+		return showProducts(request,response);
+	}
 
 	private String deletePerson(HttpServletRequest request, HttpServletResponse response) {
 		ps.deletePerson(request.getParameter("email"));

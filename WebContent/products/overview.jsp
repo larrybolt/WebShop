@@ -18,4 +18,4 @@
 </table>
 
 </main>
-<jsp:include page="../footer.jspf"/>
+<jsp:include page="footer.jspf"/>
