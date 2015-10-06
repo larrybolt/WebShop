@@ -81,9 +81,6 @@ public class Controller extends HttpServlet {
 		if(action.equals("addProduct")){
 			destination = addProduct(request,response);
 		}
-		if(action.equals("deleteProduct")){
-			destination = deleteProduct(request,response);
-		}
 		
 		RequestDispatcher view = request.getRequestDispatcher(destination);
 
@@ -93,7 +90,7 @@ public class Controller extends HttpServlet {
 	
 
 	private String deleteProduct(HttpServletRequest request, HttpServletResponse response) {
-		products.deleteProduct(request.getParameter("ID"));
+		products.deleteProduct(request.getParameter("id"));
 		return showProducts(request,response);
 	}
 
@@ -145,11 +142,6 @@ public class Controller extends HttpServlet {
 		return "overview.jsp";
 	}
 	private String showProducts(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("products",products.getProducts());
-		return "products/overview.jsp";
-	}
-	private String deleteProduct(HttpServletRequest request, HttpServletResponse response) {
-		products.deleteProduct(request.getParameter("id"));
 		request.setAttribute("products",products.getProducts());
 		return "products/overview.jsp";
 	}
