@@ -54,6 +54,23 @@ public class Controller extends HttpServlet {
 		if(action.equals("add")){
 			destination = addPerson(request,response);
 		}
+		if(action.equals("addProduct")){
+			if (request.getMethod().equals("GET")) {
+				request.getRequestDispatcher("products/create.jsp").forward(request, response);
+				return;
+			} else {
+				destination = addProduct(request,response);
+			}
+		}
+		if(action.equals("editProduct")){
+			if (request.getMethod().equals("GET")) {
+				request.setAttribute("product", products.getProduct(request.getParameter("id")));
+				request.getRequestDispatcher("products/edit.jsp").forward(request, response);
+				return;
+			} else {
+				destination = editProduct(request,response);
+			}
+		}
 		if(action.equals("delete")){
 			destination = deletePerson(request,response);
 		}
@@ -137,6 +154,32 @@ public class Controller extends HttpServlet {
 		return "signUp.jsp";
 	}
 
+	private String editProduct(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<String> errorMsg = new ArrayList<String>();
+		String id = request.getParameter("id");
+		String description = request.getParameter("description");
+		String ImgUrl = request.getParameter("ImgUrl");
+		try {
+			Double price = Double.parseDouble(request.getParameter("price"));
+			try{
+				Product p = products.getProduct(id);
+				p.setDescription(description);
+				p.setPrice(price);
+				p.setImgUrl(ImgUrl);
+			}
+			catch(Exception e){
+				errorMsg.add(e.getMessage());
+			}
+		} catch(Exception e){
+			errorMsg.add(e.getMessage());
+		}
+		
+		if(errorMsg.size()==0){
+			return showProducts(request, response);
+		}
+		request.setAttribute("errorMsg", errorMsg);
+		return "products/create.jsp";
+	}
 	private String showPersons(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("persons",ps.getPersons() );
 		return "overview.jsp";
