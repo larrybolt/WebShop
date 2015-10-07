@@ -17,13 +17,15 @@ import domain.ProductService;
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private PersonService ps= new PersonService();
-	private ProductService products = new ProductService();
+	private ProductService products;
        
-    public Controller() {
+	public Controller() {
         super();
     }
 
 	public void init(ServletConfig config) throws ServletException {
+		products = new ProductService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
+		//products = new ProductService();
 	}
 
 	public void destroy() {
@@ -71,9 +73,6 @@ public class Controller extends HttpServlet {
 				destination = editProduct(request,response);
 			}
 		}
-		if(action.equals("delete")){
-			destination = deletePerson(request,response);
-		}
 		if(action.equals("signUp")){
 			destination = "signUp.jsp";
 		}
@@ -86,23 +85,18 @@ public class Controller extends HttpServlet {
 				destination = deleteProduct(request,response);
 			}
 		}
-		/*if(action.equals("deleteConfirmed")){
-			destination = deletePersonConfirmed(request,response);
-		}*/
-		/*if(action.equals("find")){
-			destination = findPerson(request,response);
-		}*/
-		if(action.equals("productForm")){
-			destination = "form.jsp";
-		}
-		if(action.equals("addProduct")){
-			destination = addProduct(request,response);
+		if(action.equals("deletePerson")){
+			if (request.getMethod().equals("GET")) {
+				request.setAttribute("person", ps.getPerson(request.getParameter("id")));
+				request.getRequestDispatcher("persons/confirmDelete.jsp").forward(request, response);
+				return;
+			} else {
+				destination = deletePerson(request,response);
+			}
 		}
 		
 		RequestDispatcher view = request.getRequestDispatcher(destination);
-
 		view.forward(request, response);
-		
 	}
 	
 
@@ -113,23 +107,22 @@ public class Controller extends HttpServlet {
 
 	private String addProduct(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<String> errorMsg = new ArrayList<String>();
-		String id = request.getParameter("ID");
-		String description = request.getParameter("description");
+		String name = request.getParameter("name");
 		double price = Double.parseDouble(request.getParameter("price"));
-		String url = request.getParameter("url");
+		String ImgUrl = request.getParameter("ImgUrl");
 		try{
-			products.addProduct(new Product(id,description,price,url));
+			products.addProduct(new Product(name,price,ImgUrl));
 		}
 		catch(Exception e){
 			errorMsg.add(e.getMessage());
 			request.setAttribute("errorMsg", errorMsg);
-			return "form.jsp";
+			return "products/create.jsp";
 		}
 		return showProducts(request,response);
 	}
 
 	private String deletePerson(HttpServletRequest request, HttpServletResponse response) {
-		ps.deletePerson(request.getParameter("email"));
+		ps.deletePerson(request.getParameter("id"));
 		return "overview.jsp";
 	}
 
@@ -157,15 +150,16 @@ public class Controller extends HttpServlet {
 	private String editProduct(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<String> errorMsg = new ArrayList<String>();
 		String id = request.getParameter("id");
-		String description = request.getParameter("description");
+		String name = request.getParameter("name");
 		String ImgUrl = request.getParameter("ImgUrl");
 		try {
 			Double price = Double.parseDouble(request.getParameter("price"));
 			try{
 				Product p = products.getProduct(id);
-				p.setDescription(description);
+				p.setName(name);
 				p.setPrice(price);
 				p.setImgUrl(ImgUrl);
+				products.updateProducts(p);
 			}
 			catch(Exception e){
 				errorMsg.add(e.getMessage());

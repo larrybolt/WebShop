@@ -10,23 +10,19 @@
 	</div>
 	</c:forEach>
 
-    <form method="post" action="Controller?action=editProduct" novalidate="novalidate">
+    <form method="post" action="Controller?action=addProduct" novalidate="novalidate">
     	<!-- novalidate in order to be able to run tests correctly -->
         <p>
-        	Editing product with id: ${product.id}
-        	<input type="hidden" name="id" value="${product.id}">
-        </p>
-        <p>
-        	<label for="name">Description</label>
-        	<input type="text" id="name" name="name" required value="${product.name }">
+        	<label for="name">Name</label>
+        	<input type="text" id="name" name="name" required value="${product.name}">
         </p>
         <p>
         	<label for="price">Price</label>
-        	<input type="number" id="price" name="price" required value="${product.price }">EUR
+        	<input type="number" id="price" name="price" required value="${product.price}">EUR
         </p>
         <p>
         	<label for="ImgUrl">Img URL</label>
-        	<input type="url" id="ImgUrl"  name="ImgUrl" value="${product.imgUrl}" required>
+        	<input type="url" id="ImgUrl" name="ImgUrl" value="${product.imgUrl}" required>
         </p>
         <p><input type="submit" id="addProduct" value="Save"></p>
         

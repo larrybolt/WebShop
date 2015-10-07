@@ -9,7 +9,12 @@
 </tr>
 <c:forEach var="person" items="${persons}">
 <tr>
-<td>${person.userId }</td><td>${person.firstName }</td><td>${person.lastName }</td>
+<td>${person.userId }</td>
+<td>${person.firstName }</td>
+<td>${person.lastName }</td>
+<td>
+	<a href="?action=deletePerson&id=${person.userId }">delete</a>
+</td>
 </tr>
 </c:forEach>
 <caption>Users Overview</caption>

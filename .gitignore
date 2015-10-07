@@ -1,3 +1,6 @@
+# Project db config
+/WebContent/WEB-INF/config.xml
+
 *.pydevproject
 .metadata
 .gradle

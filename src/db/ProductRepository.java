@@ -4,10 +4,11 @@ import domain.Product;
 
 public interface ProductRepository {
 		
-		public Product get(String personId);
+		public Product get(int id);
 		public List<Product> getAll();
 		public void add(Product person);
 		public void update(Product person);
-		public void delete(String productId);
+		public void delete(int id);
+		public int generateNewId();
 	
 }

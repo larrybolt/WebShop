@@ -4,23 +4,24 @@
 <table>
 <tr>
 <th></th>
-<th>Description</th>
+<th>Name</th>
 <th>Price</th>
 <th></th>
 </tr>
 <c:forEach var="product" items="${products}">
 <tr>
 <td><img src="${product.imgUrl}" alt="" style="max-width: 100px;"/></td>
-<td>${product.description}</td>
+<td>${product.name}</td>
 <td>${product.price }</td>
 <td>
-	<a href="?action=deleteProduct&id=${product.id}">x</a>
+	<a href="?action=deleteProduct&id=${product.id}">delete</a>
 	<a href="?action=editProduct&id=${product.id }">edit</a>
 </td>
 </tr>
 </c:forEach>
 <caption>Product Overview</caption>
 </table>
+<p><a href="?action=addProduct">Add new Product</a></p>
 
 </main>
-<jsp:include page="footer.jspf"/>
+<jsp:include page="../footer.jspf"/>

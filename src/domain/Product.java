@@ -1,8 +1,8 @@
 package domain;
 
 public class Product {
-	private String id;
-	private String description;
+	private int id;
+	private String name;
 	private double price;
 	private String imgUrl;
 	
@@ -12,24 +12,29 @@ public class Product {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-	public Product(String id, String description, double price, String imgUrl){
+	public Product(int id, String name, double price, String imgUrl){
 		this.setId(id);
-		this.setDescription(description);
+		this.setName(name);
+		this.setPrice(price);
+		this.setImgUrl(imgUrl);
+	}
+	public Product(String name, double price, String imgUrl){
+		this.setName(name);
 		this.setPrice(price);
 		this.setImgUrl(imgUrl);
 	}
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
-	public String getDescription() {
-		return description;
+	public String getName() {
+		return this.name;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public double getPrice() {
 		return price;
@@ -37,5 +42,4 @@ public class Product {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-
 }
