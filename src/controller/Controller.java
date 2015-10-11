@@ -16,7 +16,7 @@ import domain.ProductService;
 @WebServlet("/Controller")	
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private PersonService ps= new PersonService();
+	private PersonService persons;
 	private ProductService products;
        
 	public Controller() {
@@ -25,7 +25,10 @@ public class Controller extends HttpServlet {
 
 	public void init(ServletConfig config) throws ServletException {
 		products = new ProductService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
+		persons = new PersonService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
+		// using maps instead db
 		//products = new ProductService();
+		//persons = new PersonService();
 	}
 
 	public void destroy() {
@@ -74,7 +77,7 @@ public class Controller extends HttpServlet {
 			}
 		}
 		if(action.equals("signUp")){
-			destination = "signUp.jsp";
+			destination = "persons/signUp.jsp";
 		}
 		if(action.equals("deleteProduct")){
 			if (request.getMethod().equals("GET")) {
@@ -87,7 +90,7 @@ public class Controller extends HttpServlet {
 		}
 		if(action.equals("deletePerson")){
 			if (request.getMethod().equals("GET")) {
-				request.setAttribute("person", ps.getPerson(request.getParameter("id")));
+				request.setAttribute("person", persons.getPerson(request.getParameter("id")));
 				request.getRequestDispatcher("persons/confirmDelete.jsp").forward(request, response);
 				return;
 			} else {
@@ -122,8 +125,8 @@ public class Controller extends HttpServlet {
 	}
 
 	private String deletePerson(HttpServletRequest request, HttpServletResponse response) {
-		ps.deletePerson(request.getParameter("id"));
-		return "overview.jsp";
+		persons.deletePerson(request.getParameter("id"));
+		return this.showPersons(request, response);
 	}
 
 	private String addPerson(HttpServletRequest request, HttpServletResponse response) {
@@ -134,7 +137,8 @@ public class Controller extends HttpServlet {
 		String password = request.getParameter("password");
 		try{
 			Person p = new Person(email,password,firstName,lastName);
-			ps.addPerson(p);
+			persons.addPerson(p);
+			return this.showPersons(request, response);
 		}
 		catch(Exception e){
 			errorMsg.add(e.getMessage());
@@ -144,7 +148,7 @@ public class Controller extends HttpServlet {
 			return showPersons(request, response);
 		}
 		request.setAttribute("errorMsg", errorMsg);
-		return "signUp.jsp";
+		return "persons/signUp.jsp";
 	}
 
 	private String editProduct(HttpServletRequest request, HttpServletResponse response) {
@@ -175,8 +179,8 @@ public class Controller extends HttpServlet {
 		return "products/create.jsp";
 	}
 	private String showPersons(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("persons",ps.getPersons() );
-		return "overview.jsp";
+		request.setAttribute("persons",persons.getPersons() );
+		return "persons/overview.jsp";
 	}
 	private String showProducts(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("products",products.getProducts());

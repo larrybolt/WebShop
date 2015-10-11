@@ -8,10 +8,10 @@ import java.util.Map;
 import domain.Person;
 
 public class PersonRepositoryMap implements PersonRepository {
-	private Map<String, Person> persons = new HashMap<String, Person>();
+	private Map<Integer, Person> persons = new HashMap<Integer, Person>();
 	
 	public PersonRepositoryMap () {
-		Person administrator = new Person("admin@ucll.be", "t", "Ad", "Ministrator");
+		Person administrator = new Person(1, "admin@ucll.be", "t", "Ad", "Ministrator");
 		add(administrator);
 	}
 	
@@ -30,23 +30,31 @@ public class PersonRepositoryMap implements PersonRepository {
 		if(person == null){
 			throw new IllegalArgumentException("No person given");
 		}
-		if (persons.containsKey(person.getUserId())) {
+		if (persons.containsKey(person.getId())) {
 			throw new IllegalArgumentException("User already exists");
 		}
-		persons.put(person.getUserId(), person);
+		persons.put(person.getId(), person);
 	}
 	
 	public void update(Person person){
 		if(person == null){
 			throw new IllegalArgumentException("No person given");
 		}
-		persons.put(person.getUserId(), person);
+		persons.put(person.getId(), person);
 	}
 	
-	public void delete(String personId){
-		if(personId == null){
-			throw new IllegalArgumentException("No id given");
-		}
+	public void delete(int personId){
 		persons.remove(personId);
+	}
+
+	@Override
+	public Person get(int personId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int generateNewId() {
+		return this.persons.size()+1;
 	}
 }

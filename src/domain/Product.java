@@ -13,10 +13,8 @@ public class Product {
 		this.imgUrl = imgUrl;
 	}
 	public Product(int id, String name, double price, String imgUrl){
+		this(name, price, imgUrl);
 		this.setId(id);
-		this.setName(name);
-		this.setPrice(price);
-		this.setImgUrl(imgUrl);
 	}
 	public Product(String name, double price, String imgUrl){
 		this.setName(name);

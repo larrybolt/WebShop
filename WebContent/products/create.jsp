@@ -14,15 +14,15 @@
     	<!-- novalidate in order to be able to run tests correctly -->
         <p>
         	<label for="name">Name</label>
-        	<input type="text" id="name" name="name" required value="${product.name}">
+        	<input type="text" id="name" name="name" required value="${param['name']}">
         </p>
         <p>
         	<label for="price">Price</label>
-        	<input type="number" id="price" name="price" required value="${product.price}">EUR
+        	<input type="number" id="price" name="price" required value="${param['price']}">EUR
         </p>
         <p>
         	<label for="ImgUrl">Img URL</label>
-        	<input type="url" id="ImgUrl" name="ImgUrl" value="${product.imgUrl}" required>
+        	<input type="url" id="ImgUrl" name="ImgUrl" value="${param['ImgUrl']}" required>
         </p>
         <p><input type="submit" id="addProduct" value="Save"></p>
         

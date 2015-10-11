@@ -2,7 +2,7 @@
 <jsp:include page="../header.jspf"/>
 <main>
 
-    <form method="post" action="Controller?action=deletePerson&id=${person.userId }" novalidate="novalidate">
+    <form method="post" action="Controller?action=deletePerson&id=${person.id }" novalidate="novalidate">
         <p>
         	Are you sure you want to delete <strong>${person.firstName} ${person.lastName}</strong>?
         </p>

@@ -7,16 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import domain.Product;
+import domain.Person;
 
-public class ProductRepositoryDB extends BaseRepositoryDB implements ProductRepository {
+public class PersonRepositoryDB extends BaseRepositoryDB implements PersonRepository {
 	
-	public ProductRepositoryDB(InputStream resourceAsStream) {
+	public PersonRepositoryDB(InputStream resourceAsStream) {
 		// config loading and opening connection is handled by BaseRepositoryDB
-		super("products", resourceAsStream);
+		super("persons", resourceAsStream);
 	}
 
-	public Product get(int id){
+	public Person get(int id){
 		try {
 			PreparedStatement statement = db.prepareStatement(
 					String.format("SELECT * FROM %s WHERE id = ?", this.getTable())
@@ -24,11 +24,12 @@ public class ProductRepositoryDB extends BaseRepositoryDB implements ProductRepo
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
 			result.next();
-			return new Product(
+			return new Person(
 					id, 
-					result.getString("name"), 
-					result.getDouble("price"), 
-					result.getString("imgurl")
+					result.getString("email"), 
+					result.getString("password"), 
+					result.getString("firstname"), 
+					result.getString("lastname")
 			);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -36,18 +37,19 @@ public class ProductRepositoryDB extends BaseRepositoryDB implements ProductRepo
 		}
 	}
 	
-	public List<Product> getAll(){
-		List<Product> products = new ArrayList<>();
+	public List<Person> getAll(){
+		List<Person> persons = new ArrayList<>();
 		try {
 			Statement statement = db.createStatement();
 			ResultSet results = statement.executeQuery(String.format("SELECT * FROM %s", this.getTable()));
 			while(results.next()){
-				products.add(
-				  new Product(
+				persons.add(
+				  new Person(
 					results.getInt("id"), 
-					results.getString("name"), 
-					results.getDouble("price"), 
-					results.getString("imgurl") 
+					results.getString("email"), 
+					results.getString("password"), 
+					results.getString("firstname"), 
+					results.getString("lastname") 
 				  )
 				);
 			}
@@ -56,21 +58,22 @@ public class ProductRepositoryDB extends BaseRepositoryDB implements ProductRepo
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		return products;
+		return persons;
 	}
 
-	public void add(Product product){
-		if(product == null){
-			throw new IllegalArgumentException("No Product given");
+	public void add(Person person){
+		if(person == null){
+			throw new IllegalArgumentException("No Person given");
 		}
 		try {
 			PreparedStatement statement = db.prepareStatement(
-					String.format("INSERT INTO %s (id, name, price, imgurl) VALUES (?,?,?,?) RETURNING id;", this.getTable())
+					String.format("INSERT INTO %s (id, email, password, firstname, lastname) VALUES (?,?,?,?,?) RETURNING id;", this.getTable())
 			);
-			statement.setInt(1, product.getId());
-			statement.setString(2, product.getName());
-			statement.setDouble(3, product.getPrice());
-			statement.setString(4, product.getImgUrl());
+			statement.setInt(1, this.generateNewId());
+			statement.setString(2, person.getEmail());
+			statement.setString(3, person.getPassword());
+			statement.setString(4, person.getFirstName());
+			statement.setString(5, person.getLastName());
 			ResultSet result = statement.executeQuery();
 			result.next();
 			this.last_insert_id = result.getInt("id");
@@ -80,18 +83,19 @@ public class ProductRepositoryDB extends BaseRepositoryDB implements ProductRepo
 		}
 	}
 	
-	public void update(Product product){
-		if(product == null){
-			throw new IllegalArgumentException("No Product given");
+	public void update(Person person){
+		if(person == null){
+			throw new IllegalArgumentException("No Person given");
 		}
 		try {
 			PreparedStatement statement = db.prepareStatement(
-					String.format("UPDATE %s SET name=?, price=?, imgurl=? WHERE id = ?", this.getTable())
+					String.format("UPDATE %s SET email=?, password=?, firstname=?, lastname=? WHERE id = ?", this.getTable())
 			);
-			statement.setString(1, product.getName());
-			statement.setDouble(2, product.getPrice());
-			statement.setString(3, product.getImgUrl());
-			statement.setInt(4, product.getId());
+			statement.setString(1, person.getEmail());
+			statement.setString(2, person.getPassword());
+			statement.setString(3, person.getFirstName());
+			statement.setString(4, person.getLastName());
+			statement.setInt(5, person.getId());
 			int rowsAffected = statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

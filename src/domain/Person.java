@@ -4,43 +4,56 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Person {
-	private String userId;
+	private int id;
+	private String email;
 	private String password;
 	private String firstName;
 	private String lastName;
 
-	public Person(String userId, String password, String firstName, String lastName) {
-		setUserId(userId);
+	public Person(String email, String password, String firstName, String lastName) {
+		setEmail(email);
 		setPassword(password);
 		setFirstName(firstName);
 		setLastName(lastName);
+	}
+	public Person(int id, String email, String password, String firstName, String lastName) {
+		this(email, password, firstName, lastName);
+		setId(id);
 	}
 	
 	public Person() {
 	}
 
-	public void setUserId(String userId) {
-		if(userId.isEmpty()){
+	public void setEmail(String email) {
+		if(email.isEmpty()){
 			throw new IllegalArgumentException("No id given");
 		}
 		String USERID_PATTERN = 
 				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 		Pattern p = Pattern.compile(USERID_PATTERN);
-		Matcher m = p.matcher(userId);
+		Matcher m = p.matcher(email);
 		if (!m.matches()) {
 			throw new IllegalArgumentException("Email not valid");
 		}
-		this.userId = userId;
+		this.email = email;
 	}
 
 	
 	
-	public String getUserId() {
-		return userId;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
 	}
 	
-	private String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 	

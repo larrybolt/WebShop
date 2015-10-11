@@ -33,7 +33,6 @@ public class BaseRepositoryDB {
 			));
 			result.next();
 			this.last_insert_id = result.getInt("lastid");
-			System.out.println("last id:"+ last_insert_id);
 		} catch (ClassNotFoundException e) {
 			System.out.println("PostgreSQL JDBC Driver is missing");
 			e.printStackTrace();
