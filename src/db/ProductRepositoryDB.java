@@ -2,61 +2,24 @@ package db;
 
 import java.sql.Statement;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
 import domain.Product;
 
-public class ProductRepositoryDB implements ProductRepository {
+public class ProductRepositoryDB extends BaseRepositoryDB implements ProductRepository {
 	
-	private Connection db;
-	private String table = "products";
-	Properties properties;
-	private int last_insert_id;
-
 	public ProductRepositoryDB(InputStream resourceAsStream) {
-    	try {
-    		properties = new Properties();
-    		// user, password and other properties are set in /WEB-INF/config.xml, 
-    		// copy config.example.xml to config.xml and edit values
-    		properties.loadFromXML(resourceAsStream);
-			Class.forName("org.postgresql.Driver");
-			db = DriverManager.getConnection(properties.getProperty("url"), properties);
-			// get schema from config and prepend table-var
-			this.table = properties.getProperty("schema") + "." + this.table;
-			// run a test query, to make sure it works
-			// also get the biggest id
-			ResultSet result = db.createStatement().executeQuery(String.format(
-					"SELECT max(id) as lastid FROM %s", 
-					this.table
-			));
-			result.next();
-			this.last_insert_id = result.getInt("lastid");
-			System.out.println("last id:"+ last_insert_id);
-		} catch (ClassNotFoundException e) {
-			System.out.println("PostgreSQL JDBC Driver is missing");
-			e.printStackTrace();
-			return;
-		} catch (SQLException e) {
-			System.out.println("SQL error");
-			e.printStackTrace();
-			throw new RuntimeException(e);
-    	} catch (Exception e) {
-			System.out.println("WTF error");
-			e.printStackTrace();
-    	}
+		// config loading and opening connection is handled by BaseRepositoryDB
+		super("products", resourceAsStream);
 	}
 
 	public Product get(int id){
 		try {
 			PreparedStatement statement = db.prepareStatement(
-					String.format("SELECT * FROM %s WHERE id = ?", this.table)
+					String.format("SELECT * FROM %s WHERE id = ?", this.getTable())
 			);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
@@ -77,7 +40,7 @@ public class ProductRepositoryDB implements ProductRepository {
 		List<Product> products = new ArrayList<>();
 		try {
 			Statement statement = db.createStatement();
-			ResultSet results = statement.executeQuery(String.format("SELECT * FROM %s", this.table));
+			ResultSet results = statement.executeQuery(String.format("SELECT * FROM %s", this.getTable()));
 			while(results.next()){
 				products.add(
 				  new Product(
@@ -102,7 +65,7 @@ public class ProductRepositoryDB implements ProductRepository {
 		}
 		try {
 			PreparedStatement statement = db.prepareStatement(
-					String.format("INSERT INTO %s (id, name, price, imgurl) VALUES (?,?,?,?) RETURNING id;", this.table)
+					String.format("INSERT INTO %s (id, name, price, imgurl) VALUES (?,?,?,?) RETURNING id;", this.getTable())
 			);
 			statement.setInt(1, product.getId());
 			statement.setString(2, product.getName());
@@ -124,7 +87,7 @@ public class ProductRepositoryDB implements ProductRepository {
 		}
 		try {
 			PreparedStatement statement = db.prepareStatement(
-					String.format("UPDATE %s SET name=?, price=?, imgurl=? WHERE id = ?", this.table)
+					String.format("UPDATE %s SET name=?, price=?, imgurl=? WHERE id = ?", this.getTable())
 			);
 			statement.setString(1, product.getName());
 			statement.setDouble(2, product.getPrice());
@@ -140,7 +103,7 @@ public class ProductRepositoryDB implements ProductRepository {
 	public void delete(int id){
 		try {
 			PreparedStatement statement = db.prepareStatement(
-					String.format("DELETE FROM %s WHERE id = ?", this.table)
+					String.format("DELETE FROM %s WHERE id = ?", this.getTable())
 			);
 			statement.setInt(1, id);
 			int rowsAffected = statement.executeUpdate();
