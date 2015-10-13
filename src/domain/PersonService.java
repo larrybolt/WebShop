@@ -46,4 +46,14 @@ public class PersonService {
 	private PersonRepository getPersonRepository() {
 		return personRepository;
 	}
+	// TODO: @Annelore, add login function
+	/*
+	 * Login functions
+	 * 
+	 * @param	email:String
+	 * @param	password:String
+	 * 
+	 * Returns Person-instance if login was succesful, otherwise throws exception.
+	 */
+	
 }

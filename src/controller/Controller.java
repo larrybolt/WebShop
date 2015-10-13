@@ -9,6 +9,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import domain.Person;
 import domain.PersonService;
 import domain.Product;
@@ -25,12 +27,13 @@ public class Controller extends HttpServlet {
     }
 
 	public void init(ServletConfig config) throws ServletException {
-		products = new ProductService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
-		persons = new PersonService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
+		//products = new ProductService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
+		//persons = new PersonService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
 		// using maps instead db
-		//products = new ProductService();
-		//persons = new PersonService();
+		products = new ProductService();
+		persons = new PersonService();
 	}
+
 
 	public void destroy() {
 	}
@@ -95,6 +98,14 @@ public class Controller extends HttpServlet {
 				destination = editProduct(request,response);
 			}
 		}
+		if(action.equals("login")){
+			if (request.getMethod().equals("GET")) {
+				request.getRequestDispatcher("persons/login.jsp").forward(request, response);
+				return;
+			} else {
+				destination = login(request,response);
+			}
+		}
 		if(action.equals("signUp")){
 			destination = "persons/signUp.jsp";
 		}
@@ -121,6 +132,17 @@ public class Controller extends HttpServlet {
 		view.forward(request, response);
 	}
 	
+
+	private String login(HttpServletRequest request, HttpServletResponse response) {
+		String email = request.getParameter("email");
+		String password =  request.getParameter("password");
+		Person user = persons.loginUser(email,password);
+		if(user == null){
+			request.setAttribute("errorMsg", "fout stompie");
+			return "persons/login.jsp";
+		} // TODO: use exceptions @Annelore
+		return null;
+	}
 
 	private String deleteProduct(HttpServletRequest request, HttpServletResponse response) {
 		products.deleteProduct(request.getParameter("id"));
@@ -205,6 +227,11 @@ public class Controller extends HttpServlet {
 		request.setAttribute("products",products.getProducts());
 		return "products/overview.jsp";
 	}
+	private void SessionHandler(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		
+	}
+	
 }
 
 	

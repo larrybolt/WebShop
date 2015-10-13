@@ -11,7 +11,7 @@
 <c:forEach var="product" items="${products}">
 <tr>
 <td><img src="${product.imgUrl}" alt="" style="max-width: 100px;"/></td>
-<td>${product.name}</td>
+<td><c:out value="${product.name}"/></td>
 <td>${product.price }</td>
 <td>
 	<a href="?action=deleteProduct&id=${product.id}">delete</a>
