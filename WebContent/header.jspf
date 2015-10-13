@@ -29,6 +29,16 @@
 				</li>
 			</ul>
 		</nav>
+		<div style="float: right;">
+			Hi guest! ${counter}
+			<a href="">login</a>
+		</div>
+		<!--
+		<div style="float: right;">
+			logged in as: annelore,
+			<a href="">logout</a>
+		</div>
+		-->
 	<h2>
 		<c:if test="${empty param['action']}">
 		Home

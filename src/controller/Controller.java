@@ -5,6 +5,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,24 @@ public class Controller extends HttpServlet {
 		procesRequest(request, response);
 	}
 	protected void procesRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+		Cookie c =null ;
+		int visits = 0;
+		boolean cookieFound = false;
+		Cookie[] cookies = request.getCookies();
+		for(int i=0; i<cookies.length;i++){
+			if(cookies[i].getName().equals("counter")){
+				visits = Integer.parseInt(cookies[i].getValue())+1;
+				cookies[i].setValue(String.format("%d",visits));
+				c = cookies[i];
+				cookieFound = true;
+			}
+		} 
+		if(!cookieFound){
+			c = new Cookie("counter","1" );
+		}
+		
+		response.addCookie(c);
+		request.setAttribute("counter", c.getValue());
 		String destination = "index.jsp";
 		String action = request.getParameter("action");
 
