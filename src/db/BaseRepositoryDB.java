@@ -17,12 +17,8 @@ public class BaseRepositoryDB {
 	public BaseRepositoryDB(String table, InputStream resourceAsStream){
 		this.table = table;
     	try {
-    		properties = new Properties();
-    		// user, password and other properties are set in /WEB-INF/config.xml, 
-    		// copy config.example.xml to config.xml and edit values
-    		properties.loadFromXML(resourceAsStream);
-			Class.forName("org.postgresql.Driver");
-			db = DriverManager.getConnection(properties.getProperty("url"), properties);
+    		// we cache the db-connection
+			db = RepositoryDBConnection.getConnection(resourceAsStream);
 			// get schema from config and prepend table-var
 			this.table = properties.getProperty("schema") + "." + this.table;
 			// run a test query, to make sure it works
@@ -33,10 +29,6 @@ public class BaseRepositoryDB {
 			));
 			result.next();
 			this.last_insert_id = result.getInt("lastid");
-		} catch (ClassNotFoundException e) {
-			System.out.println("PostgreSQL JDBC Driver is missing");
-			e.printStackTrace();
-			return;
 		} catch (SQLException e) {
 			System.out.println("SQL error");
 			e.printStackTrace();
