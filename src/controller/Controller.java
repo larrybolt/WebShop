@@ -46,14 +46,18 @@ public class Controller extends HttpServlet {
 		procesRequest(request, response);
 	}
 	protected void procesRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
-		Cookie c =null ;
+		Cookie c = null;
 		int visits = 0;
 		boolean cookieFound = false;
 		Cookie[] cookies = request.getCookies();
 		for(int i=0; i<cookies.length;i++){
 			if(cookies[i].getName().equals("counter")){
-				visits = Integer.parseInt(cookies[i].getValue())+1;
-				cookies[i].setValue(String.format("%d",visits));
+				try {
+					visits = Integer.parseInt(cookies[i].getValue())+1;
+					cookies[i].setValue(new Integer(visits).toString());
+				} catch (Exception e){ // catch parseInt errors
+					cookies[i].setValue("1");
+				}
 				c = cookies[i];
 				cookieFound = true;
 			}
