@@ -11,8 +11,6 @@ public class PersonRepositoryMap implements PersonRepository {
 	private Map<Integer, Person> persons = new HashMap<Integer, Person>();
 	
 	public PersonRepositoryMap () {
-		Person administrator = new Person(1, "admin@ucll.be", "t", "Ad", "Ministrator");
-		add(administrator);
 	}
 	
 	public Person get(String personId){

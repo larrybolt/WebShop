@@ -27,11 +27,11 @@ public class Controller extends HttpServlet {
     }
 
 	public void init(ServletConfig config) throws ServletException {
-		//products = new ProductService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
-		//persons = new PersonService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
+		products = new ProductService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
+		persons = new PersonService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
 		// using maps instead db
-		products = new ProductService();
-		persons = new PersonService();
+		//products = new ProductService();
+		//persons = new PersonService();
 	}
 
 
@@ -140,11 +140,11 @@ public class Controller extends HttpServlet {
 	private String login(HttpServletRequest request, HttpServletResponse response) {
 		String email = request.getParameter("email");
 		String password =  request.getParameter("password");
-		Person user = persons.loginUser(email,password);
-		if(user == null){
-			request.setAttribute("errorMsg", "fout stompie");
-			return "persons/login.jsp";
-		} // TODO: use exceptions @Annelore
+		//Person user = persons.loginUser(email,password);
+		//if(user == null){
+			//request.setAttribute("errorMsg", "fout stompie");
+			//return "persons/login.jsp";
+		//} // TODO: use exceptions @Annelore
 		return null;
 	}
 

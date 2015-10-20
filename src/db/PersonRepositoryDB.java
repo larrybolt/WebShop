@@ -29,7 +29,8 @@ public class PersonRepositoryDB extends BaseRepositoryDB implements PersonReposi
 					result.getString("email"), 
 					result.getString("password"), 
 					result.getString("firstname"), 
-					result.getString("lastname")
+					result.getString("lastname"),
+					result.getString("salt")
 			);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -49,7 +50,8 @@ public class PersonRepositoryDB extends BaseRepositoryDB implements PersonReposi
 					results.getString("email"), 
 					results.getString("password"), 
 					results.getString("firstname"), 
-					results.getString("lastname") 
+					results.getString("lastname"),
+					results.getString("salt")
 				  )
 				);
 			}
@@ -67,13 +69,14 @@ public class PersonRepositoryDB extends BaseRepositoryDB implements PersonReposi
 		}
 		try {
 			PreparedStatement statement = db.prepareStatement(
-					String.format("INSERT INTO %s (id, email, password, firstname, lastname) VALUES (?,?,?,?,?) RETURNING id;", this.getTable())
+					String.format("INSERT INTO %s (id, email, password, firstname, lastname, salt) VALUES (?,?,?,?,?,?) RETURNING id;", this.getTable())
 			);
 			statement.setInt(1, this.generateNewId());
 			statement.setString(2, person.getEmail());
 			statement.setString(3, person.getPassword());
 			statement.setString(4, person.getFirstName());
 			statement.setString(5, person.getLastName());
+			statement.setString(6, person.getSalt());
 			ResultSet result = statement.executeQuery();
 			result.next();
 			this.last_insert_id = result.getInt("id");

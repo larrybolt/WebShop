@@ -18,9 +18,9 @@ public class BaseRepositoryDB {
 		this.table = table;
     	try {
     		// we cache the db-connection
-			db = RepositoryDBConnection.getConnection(resourceAsStream);
+			db = RepositoryDBConnection.getInstance(resourceAsStream).getConnection();
 			// get schema from config and prepend table-var
-			this.table = properties.getProperty("schema") + "." + this.table;
+			this.table = RepositoryDBConnection.getInstance(resourceAsStream).getSchema() + "." + this.table;
 			// run a test query, to make sure it works
 			// also get the biggest id
 			ResultSet result = db.createStatement().executeQuery(String.format(
