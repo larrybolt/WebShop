@@ -55,4 +55,10 @@ public class PersonRepositoryMap implements PersonRepository {
 	public int generateNewId() {
 		return this.persons.size()+1;
 	}
+
+	@Override
+	public Person getPersonByEmail(String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

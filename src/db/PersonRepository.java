@@ -10,4 +10,5 @@ public interface PersonRepository {
 		public void update(Person person);
 		public void delete(int id);
 		public int generateNewId();
+		public Person getPersonByEmail(String email);
 }

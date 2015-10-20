@@ -124,4 +124,27 @@ public class PersonRepositoryDB extends BaseRepositoryDB implements PersonReposi
 	public int generateNewId() {
 		return this.last_insert_id+1;
 	}
+
+	@Override
+	public Person getPersonByEmail(String email) {
+		try {
+			PreparedStatement statement = db.prepareStatement(
+					String.format("SELECT * FROM %s WHERE email = ?", this.getTable())
+			);
+			statement.setString(1, email);
+			ResultSet result = statement.executeQuery();
+			result.next();
+			return new Person(
+					result.getInt("id"), 
+					result.getString("email"), 
+					result.getString("password"), 
+					result.getString("firstname"), 
+					result.getString("lastname"),
+					result.getString("salt")
+			);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
 }

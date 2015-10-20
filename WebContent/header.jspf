@@ -31,7 +31,7 @@
 		</nav>
 		<div style="float: right;">
 			Hi guest! ${counter}
-			<a href="">login</a>
+			<a href="Controller?action=login">login</a>
 		</div>
 		<!--
 		<div style="float: right;">

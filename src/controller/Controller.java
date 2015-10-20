@@ -50,18 +50,20 @@ public class Controller extends HttpServlet {
 		int visits = 0;
 		boolean cookieFound = false;
 		Cookie[] cookies = request.getCookies();
-		for(int i=0; i<cookies.length;i++){
-			if(cookies[i].getName().equals("counter")){
-				try {
-					visits = Integer.parseInt(cookies[i].getValue())+1;
-					cookies[i].setValue(new Integer(visits).toString());
-				} catch (Exception e){ // catch parseInt errors
-					cookies[i].setValue("1");
+		if(cookies != null){
+			for(int i=0; i<cookies.length;i++){
+				if(cookies[i].getName().equals("counter")){
+					try {
+						visits = Integer.parseInt(cookies[i].getValue())+1;
+						cookies[i].setValue(new Integer(visits).toString());
+					} catch (Exception e){ // catch parseInt errors
+						cookies[i].setValue("1");
+					}
+					c = cookies[i];
+					cookieFound = true;
 				}
-				c = cookies[i];
-				cookieFound = true;
-			}
-		} 
+			} 
+		}	
 		if(!cookieFound){
 			c = new Cookie("counter","1" );
 		}
@@ -138,14 +140,20 @@ public class Controller extends HttpServlet {
 	
 
 	private String login(HttpServletRequest request, HttpServletResponse response) {
+		ArrayList<String> errorMsg = new ArrayList<String>();
 		String email = request.getParameter("email");
 		String password =  request.getParameter("password");
-		//Person user = persons.loginUser(email,password);
-		//if(user == null){
-			//request.setAttribute("errorMsg", "fout stompie");
-			//return "persons/login.jsp";
-		//} // TODO: use exceptions @Annelore
-		return null;
+		try{
+			Person user = persons.authenticate(email, password);
+			HttpSession session = request.getSession();
+			session.setAttribute("person", user);
+			return "index.jsp";
+		}
+		catch(Exception e){
+			errorMsg.add(e.getMessage());
+			request.setAttribute("errorMsg", errorMsg);
+			return "persons/login.jsp";
+		}
 	}
 
 	private String deleteProduct(HttpServletRequest request, HttpServletResponse response) {

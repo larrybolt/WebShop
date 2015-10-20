@@ -23,6 +23,10 @@ public class PersonService {
 	public Person getPerson(String id) {
 		return getPerson(Integer.parseInt(id));
 	}
+	
+	public Person getPersonByEmail(String email){
+		return getPersonRepository().getPersonByEmail(email);
+	}
 
 	public List<Person> getPersons() {
 		return getPersonRepository().getAll();
@@ -55,5 +59,16 @@ public class PersonService {
 	 * 
 	 * Returns Person-instance if login was succesful, otherwise throws exception.
 	 */
-	
+	public Person authenticate(String email, String password){
+		if(email == null || password == null){
+			throw new IllegalArgumentException("email or password is null");
+		}
+		Person p = this.getPersonByEmail(email);
+		if(p.isCorrectPassword(password)){
+			return p;
+		}
+		else{
+			throw new IllegalArgumentException("buiten!! dief");
+		}
+	}
 }
