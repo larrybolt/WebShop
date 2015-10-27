@@ -1,6 +1,8 @@
 package controller;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import domain.NotAuthorizedException;
 import domain.Person;
 import domain.PersonService;
+import domain.PersonType;
 import domain.Product;
 import domain.ProductService;
 
@@ -80,73 +84,93 @@ public class Controller extends HttpServlet {
 			request.getRequestDispatcher(destination).forward(request, response);
 			return;
 		}
-
-		if(action.equals("overview")){
-			destination = showPersons(request,response);
-		}
-		if(action.equals("products")){
-			destination = showProducts(request,response);
-		}
-		if(action.equals("add")){
-			destination = addPerson(request,response);
-		}
-		if(action.equals("addProduct")){
-			if (request.getMethod().equals("GET")) {
-				request.getRequestDispatcher("products/create.jsp").forward(request, response);
+		try{	
+			if(action.equals("overview")){
+				destination = showPersons(request,response);
+			}
+			if(action.equals("products")){
+				destination = showProducts(request,response);
+			}
+			if(action.equals("add")){
+				destination = addPerson(request,response);
+			}
+			if(action.equals("addProduct")){
+				if (request.getMethod().equals("GET")) {
+					if(isFromUserWithRole(request,PersonType.ADMINISTRATOR)){
+						request.getRequestDispatcher("products/create.jsp").forward(request, response);
+						return;
+					}
+					else{
+						throw new NotAuthorizedException("u heeft niet de juiste rechten");
+					}
+					
+				} else {
+					destination = addProduct(request,response);
+				}
+			}
+			if(action.equals("editProduct")){
+				if (request.getMethod().equals("GET")) {
+					request.setAttribute("product", products.getProduct(request.getParameter("id")));
+					request.getRequestDispatcher("products/edit.jsp").forward(request, response);
+					return;
+				} else {
+					destination = editProduct(request,response);
+				}
+			}
+			if(action.equals("login")){
+				if (request.getMethod().equals("GET")) {
+					request.getRequestDispatcher("persons/login.jsp").forward(request, response);
+					return;
+				} else {
+					destination = login(request,response);
+				}
+			}
+			if(action.equals("logout")){
+				request.getSession().setAttribute("person", null);
+				request.setAttribute("sessionPerson", null);
+				request.getRequestDispatcher("index.jsp").forward(request, response);
 				return;
-			} else {
-				destination = addProduct(request,response);
+			}
+			if(action.equals("signUp")){
+				destination = "persons/signUp.jsp";
+			}
+			if(action.equals("deleteProduct")){
+				if (request.getMethod().equals("GET")) {
+					request.setAttribute("product", products.getProduct(request.getParameter("id")));
+					request.getRequestDispatcher("products/confirmDelete.jsp").forward(request, response);
+					return;
+				} else {
+					destination = deleteProduct(request,response);
+				}
+			}
+			if(action.equals("deletePerson")){
+				if (request.getMethod().equals("GET")) {
+					request.setAttribute("person", persons.getPerson(request.getParameter("id")));
+					request.getRequestDispatcher("persons/confirmDelete.jsp").forward(request, response);
+					return;
+				} else {
+					destination = deletePerson(request,response);
+				}
 			}
 		}
-		if(action.equals("editProduct")){
-			if (request.getMethod().equals("GET")) {
-				request.setAttribute("product", products.getProduct(request.getParameter("id")));
-				request.getRequestDispatcher("products/edit.jsp").forward(request, response);
-				return;
-			} else {
-				destination = editProduct(request,response);
-			}
+		catch(NotAuthorizedException e){
+			List<String> errors = new ArrayList<String>();
+			errors.add(e.getMessage());
+			request.setAttribute("errors", errors);
+			destination= "index.jsp";
 		}
-		if(action.equals("login")){
-			if (request.getMethod().equals("GET")) {
-				request.getRequestDispatcher("persons/login.jsp").forward(request, response);
-				return;
-			} else {
-				destination = login(request,response);
-			}
-		}
-		if(action.equals("logout")){
-			request.getSession().setAttribute("person", null);
-			request.setAttribute("sessionPerson", null);
-			request.getRequestDispatcher("index.jsp").forward(request, response);
-			return;
-		}
-		if(action.equals("signUp")){
-			destination = "persons/signUp.jsp";
-		}
-		if(action.equals("deleteProduct")){
-			if (request.getMethod().equals("GET")) {
-				request.setAttribute("product", products.getProduct(request.getParameter("id")));
-				request.getRequestDispatcher("products/confirmDelete.jsp").forward(request, response);
-				return;
-			} else {
-				destination = deleteProduct(request,response);
-			}
-		}
-		if(action.equals("deletePerson")){
-			if (request.getMethod().equals("GET")) {
-				request.setAttribute("person", persons.getPerson(request.getParameter("id")));
-				request.getRequestDispatcher("persons/confirmDelete.jsp").forward(request, response);
-				return;
-			} else {
-				destination = deletePerson(request,response);
-			}
-		}
-		
 		RequestDispatcher view = request.getRequestDispatcher(destination);
 		view.forward(request, response);
 	}
 	
+
+	private boolean isFromUserWithRole(HttpServletRequest request, PersonType type) {
+		Person person = (Person) request.getSession().getAttribute("user");
+	 	 if (person != null && person.getPersonType().equals(type)) {
+			 return true;
+	 	 }
+	 	 return false;
+	}
 
 	private String login(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<String> errorMsg = new ArrayList<String>();

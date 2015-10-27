@@ -15,17 +15,19 @@ public class Person {
 	private String firstName;
 	private String lastName;
 	private String salt;
+	private PersonType personType;
 
 	/*
 	 * Returns existing person
 	 */
-	public Person(int id, String email, String password, String firstName, String lastName, String salt) {
+	public Person(int id, String email, String password, String firstName, String lastName, String salt, PersonType personType) {
 		setId(id);
 		setEmail(email);
 		setPassword(password);
 		setFirstName(firstName);
 		setLastName(lastName);
 		setSalt(salt);
+		setPersonType(personType);
 	}
 	/*
 	 * Returns new person, also generates salt and hashes password
@@ -157,5 +159,11 @@ public class Person {
 	}
 	public void setSalt(String salt) {
 		this.salt = salt;
-	}	
+	}
+	public PersonType getPersonType(){
+		return this.getPersonType();
+	}
+	public void setPersonType(PersonType role){
+		this.personType = role;
+	}
 }
