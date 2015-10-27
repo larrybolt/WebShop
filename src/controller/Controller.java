@@ -46,6 +46,9 @@ public class Controller extends HttpServlet {
 		procesRequest(request, response);
 	}
 	protected void procesRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+		HttpSession session = request.getSession();
+		Person person = (Person) session.getAttribute("person");
+		request.setAttribute("sessionPerson", person);
 		Cookie c = null;
 		int visits = 0;
 		boolean cookieFound = false;
@@ -111,6 +114,12 @@ public class Controller extends HttpServlet {
 			} else {
 				destination = login(request,response);
 			}
+		}
+		if(action.equals("logout")){
+			request.getSession().setAttribute("person", null);
+			request.setAttribute("sessionPerson", null);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+			return;
 		}
 		if(action.equals("signUp")){
 			destination = "persons/signUp.jsp";

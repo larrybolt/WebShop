@@ -29,16 +29,20 @@
 				</li>
 			</ul>
 		</nav>
+		<c:if test="${ empty sessionPerson}">
 		<div style="float: right;">
 			Hi guest! ${counter}
 			<a href="Controller?action=login">login</a>
 		</div>
-		<!--
+		</c:if>
+		<c:if test="${not empty sessionPerson}">
 		<div style="float: right;">
-			logged in as: annelore,
-			<a href="">logout</a>
+			logged in as: ${sessionPerson.firstName },
+			<a href="Controller?action=logout">logout</a>
 		</div>
-		-->
+		</c:if>
+		
+		
 	<h2>
 		<c:if test="${empty param['action']}">
 		Home
