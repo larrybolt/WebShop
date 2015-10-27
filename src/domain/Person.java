@@ -20,22 +20,22 @@ public class Person {
 	/*
 	 * Returns existing person
 	 */
-	public Person(int id, String email, String password, String firstName, String lastName, String salt, PersonType personType) {
+	public Person(int id, String email, String password, String firstName, String lastName, String salt ) {
 		setId(id);
 		setEmail(email);
 		setPassword(password);
 		setFirstName(firstName);
 		setLastName(lastName);
 		setSalt(salt);
-		setPersonType(personType);
 	}
 	/*
 	 * Returns new person, also generates salt and hashes password
 	 */
-	public Person(String email, String password, String firstName, String lastName) {
+	public Person(String email, String password, String firstName, String lastName, PersonType personType) {
 		setEmail(email);
 		setFirstName(firstName);
 		setLastName(lastName);
+		setPersonType(personType);
 		// generate a new salt
 		setSalt(this.generateSalt());
 		// hash password for user
@@ -43,6 +43,7 @@ public class Person {
 			throw new IllegalArgumentException("Please specify a 4 character password");
 		setPassword(this.hashPassword(password));
 	}
+	
 	
 	public void setEmail(String email) {
 		if(email.isEmpty()){

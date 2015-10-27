@@ -8,12 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import domain.Person;
+import domain.PersonType;
 
 public class PersonRepositoryDB extends BaseRepositoryDB implements PersonRepository {
 	
 	public PersonRepositoryDB(InputStream resourceAsStream) {
 		// config loading and opening connection is handled by BaseRepositoryDB
 		super("persons", resourceAsStream);
+		
 	}
 
 	public Person get(int id){

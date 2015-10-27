@@ -32,7 +32,9 @@ public class Controller extends HttpServlet {
 
 	public void init(ServletConfig config) throws ServletException {
 		products = new ProductService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
+		
 		persons = new PersonService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
+		
 		// using maps instead db
 		//products = new ProductService();
 		//persons = new PersonService();
@@ -222,8 +224,9 @@ public class Controller extends HttpServlet {
 		String firstName = request.getParameter("firstName");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		PersonType type = PersonType.CUSTOMER;
 		try{
-			Person p = new Person(email,password,firstName,lastName);
+			Person p = new Person( email, password,firstName,lastName, type);
 			persons.addPerson(p);
 			return this.showPersons(request, response);
 		}

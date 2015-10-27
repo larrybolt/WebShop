@@ -15,6 +15,8 @@ public class PersonService {
 	
 	public PersonService(InputStream resourceAsStream) {
 		this.personRepository = new PersonRepositoryDB(resourceAsStream);
+		/*Person admin =  new Person("admin@administrator.be", "t", "ad", "min", PersonType.ADMINISTRATOR);
+		this.personRepository.add(admin);*/
 	}
 	
 	public Person getPerson(int personId) {
