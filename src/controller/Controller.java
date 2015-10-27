@@ -156,6 +156,7 @@ public class Controller extends HttpServlet {
 			Person user = persons.authenticate(email, password);
 			HttpSession session = request.getSession();
 			session.setAttribute("person", user);
+			request.setAttribute("sessionPerson", user);
 			return "index.jsp";
 		}
 		catch(Exception e){
