@@ -29,6 +29,10 @@
         	<label for="password">Password</label>
         	<input type="password" id="password"  name="password" required>
         </p>
+        <p>
+        	<label for="woonplaats">Woonplaats</label>
+        	<input type="text" id="woonplaats"  name="woonplaats" required>
+        </p>
         <p><input type="submit" id="signUp" value="Sign Up"></p>
         
     </form>

@@ -5,7 +5,10 @@
 <tr>
 <th></th>
 <th>Name</th>
-<th>Price</th>
+<th>
+	Price
+	(<a href="?action=${param['action']}&order=price">Sorteer</a>)
+</th>
 <th></th>
 </tr>
 <c:forEach var="product" items="${products}">

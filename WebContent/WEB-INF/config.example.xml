@@ -6,4 +6,7 @@
 	<entry key="schema">r0296766_poney</entry>
 	<entry key="user">r0457024</entry>
 	<entry key="password"></entry>
+	<!-- nodig voor verbinding te maken met db van school --> 
+	<entry key="ssl">true</entry>
+	<entry key="sslfactory">org.postgresql.ssl.NonValidatingFactory</entry>
 </properties>
