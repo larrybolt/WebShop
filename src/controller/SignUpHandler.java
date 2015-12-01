@@ -1,15 +1,16 @@
 package controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import domain.PersonType;
 
-public class SignUpHandler {
+public class SignUpHandler implements RequestHandler {
 	
 	public SignUpHandler(){
 		
 	}
-	public String handler(HttpServletRequest request, PersonType type){
+	public String handle(HttpServletRequest request, HttpServletResponse response) {
 		return "persons/signUp.jsp";
 	}
 }

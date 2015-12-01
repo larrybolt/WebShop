@@ -80,16 +80,18 @@ public class Controller extends HttpServlet {
 		
 		response.addCookie(c);
 		request.setAttribute("counter", c.getValue());
-		String destination;
-		try {
-			destination = new ControllerFactory(persons, products).handleAction(request, response);
-		} catch (ServiceException e) {
-			destination = "index.jsp";
-		}
+		String destination = "index.jsp";
+		
+			
+		destination = new ControllerFactory(persons, products).handleAction(request, response);		
 		
 		
 		RequestDispatcher view = request.getRequestDispatcher(destination);
 		view.forward(request, response);
+	}
+	private void SessionHandler(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		
 	}
 	
 
@@ -105,10 +107,7 @@ public class Controller extends HttpServlet {
 	
 
 	
-	private void SessionHandler(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
-		
-	}
+	
 	
 }
 

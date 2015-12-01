@@ -19,11 +19,12 @@ public class ControllerFactory {
 	private Map<String, RequestHandler> handlers = new HashMap<>();
 	
 	
-	public ControllerFactory(PersonService personModel, ProductService productModel )throws ServiceException{
+	public ControllerFactory(PersonService personModel, ProductService productModel ){
 		handlers.put("overview", new PersonOverviewHandler(personModel));
-		handlers.put("producten", new ProductOverviewHandler(productModel));
+		handlers.put("products", new ProductOverviewHandler(productModel));
 		handlers.put("add", new AddPersonHandler(personModel));
-		handlers.put("addProduct", new AddPersonHandler(personModel));	
+		handlers.put("addProduct", new AddPersonHandler(personModel));
+		handlers.put("signUp", new SignUpHandler());
 	}
 	public String handleAction(HttpServletRequest request,HttpServletResponse response){
 		String action = request.getParameter("action");
@@ -32,7 +33,7 @@ public class ControllerFactory {
 		}
 		try{
 			RequestHandler handler= handlers.get(action);
-			handler.handle(request,response);
+			return handler.handle(request,response);
 			
 		}
 		catch(NotAuthorizedException e ){
@@ -41,7 +42,7 @@ public class ControllerFactory {
 			request.setAttribute("errors", errors);
 			return "index.jsp";
 		}
-		return "index.jsp";
+		
 	}
 	
 	
