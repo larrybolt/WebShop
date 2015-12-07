@@ -10,13 +10,17 @@ import controller.RequestHandler;
 import domain.Product;
 import domain.ProductService;
 
-public class editProductHandler implements RequestHandler{
+public class ChangeProductHandler implements RequestHandler{
 	private ProductService productModel;
 	
-	public editProductHandler(ProductService productModel){
+	public ChangeProductHandler(ProductService productModel){
 		this.productModel = productModel;
 	}
 	public String handle(HttpServletRequest request, HttpServletResponse response){
+		if (request.getMethod().equals("GET")) {
+			request.setAttribute("product", productModel.getProduct(request.getParameter("id")));
+			return "products/edit.jsp";
+		} 
 		ArrayList<String> errorMsg = new ArrayList<String>();
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
@@ -29,7 +33,6 @@ public class editProductHandler implements RequestHandler{
 				p.setPrice(price);
 				p.setImgUrl(ImgUrl);
 				productModel.updateProducts(p);
-				throw new CustomRedirectException("?action=products");
 			}
 			catch(Exception e){
 				errorMsg.add(e.getMessage());
@@ -37,12 +40,6 @@ public class editProductHandler implements RequestHandler{
 		} catch(Exception e){
 			errorMsg.add(e.getMessage());
 		}
-		
-		if(errorMsg.size()==0){
-			return new ProductOverviewHandler(productModel).handle(request, response);
-		}
-		request.setAttribute("errorMsg", errorMsg);
-		return "products/create.jsp";
+		throw new CustomRedirectException("?action=products");
 	}
-	
 }
