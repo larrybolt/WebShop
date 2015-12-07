@@ -1,9 +1,11 @@
-package controller;
+package controller.persons;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LogoutHandler {
+import controller.RequestHandler;
+
+public class LogoutHandler implements RequestHandler {
 
 	public LogoutHandler(){
 		

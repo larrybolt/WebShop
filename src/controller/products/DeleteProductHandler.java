@@ -1,11 +1,12 @@
-package controller;
+package controller.products;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.RequestHandler;
 import domain.ProductService;
 
-public class DeleteProductHandler {
+public class DeleteProductHandler implements RequestHandler {
 	private ProductService productModel;
 	
 	public DeleteProductHandler(ProductService productModel){
@@ -15,9 +16,9 @@ public class DeleteProductHandler {
 		if (request.getMethod().equals("GET")) {
 			request.setAttribute("product", productModel.getProduct(request.getParameter("id")));
 			return "products/confirmDelete.jsp";
-		} else {
-			productModel.deleteProduct(request.getParameter("id"));
-			return  new ProductOverviewHandler(productModel).handle(request, response);
-		}
+		} 
+
+		productModel.deleteProduct(request.getParameter("id"));
+		return new ProductOverviewHandler(productModel).handle(request, response);
 	}
 }

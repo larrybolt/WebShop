@@ -1,10 +1,11 @@
-package controller;
+package controller.persons;
 
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.RequestHandler;
 import domain.Person;
 import domain.PersonService;
 import domain.PersonType;
@@ -16,6 +17,9 @@ public class AddPersonHandler implements RequestHandler {
 		this.personModel = personModel;
 	}
 	public String handle(HttpServletRequest request, HttpServletResponse response){
+		if (request.getMethod().equals("GET")){
+			return "persons/signUp.jsp";
+		}
 		ArrayList<String> errorMsg = new ArrayList<String>();
 		String lastName = request.getParameter("lastName");
 		String firstName = request.getParameter("firstName");
@@ -24,7 +28,7 @@ public class AddPersonHandler implements RequestHandler {
 		String woonplaats = request.getParameter("woonplaats");
 		PersonType type = PersonType.CUSTOMER;
 		try{
-			Person p = new Person( email, password,firstName,lastName,woonplaats, type);
+			Person p = new Person(email, password,firstName, lastName, woonplaats, type);
 			personModel.addPerson(p);
 			return new PersonOverviewHandler(personModel).handle(request, response);
 			
@@ -32,14 +36,10 @@ public class AddPersonHandler implements RequestHandler {
 		catch(Exception e){
 			errorMsg.add(e.getMessage());
 		}
-		
 		if(errorMsg.size()==0){
 			return new PersonOverviewHandler(personModel).handle(request, response);
 		}
 		request.setAttribute("errorMsg", errorMsg);
 		return "persons/signUp.jsp";
-	
 	}
-	
-		
 }

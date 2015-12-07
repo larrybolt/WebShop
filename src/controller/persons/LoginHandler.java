@@ -1,4 +1,4 @@
-package controller;
+package controller.persons;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controller.RequestHandler;
 import domain.Person;
 import domain.PersonService;
 
@@ -16,6 +17,9 @@ public class LoginHandler implements RequestHandler {
 		this.personModel= personModel;
 	}
 	public String handle(HttpServletRequest request, HttpServletResponse response){
+		if (request.getMethod().equals("GET")){
+			return "persons/login.jsp";
+		}
 		ArrayList<String> errorMsg = new ArrayList<String>();
 		String email = request.getParameter("email");
 		String password =  request.getParameter("password");

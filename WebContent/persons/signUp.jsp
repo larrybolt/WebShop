@@ -11,7 +11,7 @@
 	</c:forEach>
 		
 
-    <form method="post" action="Controller?action=add" novalidate="novalidate">
+    <form method="post" action="Controller?action=addPerson" novalidate="novalidate">
     	<!-- novalidate in order to be able to run tests correctly -->
         <p>
         	<label for="firstName">First Name</label>
