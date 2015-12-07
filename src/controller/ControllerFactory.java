@@ -8,16 +8,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controller.persons.AddPersonHandler;
-import controller.persons.DeletePersonHandler;
-import controller.persons.LoginHandler;
-import controller.persons.LogoutHandler;
-import controller.persons.PersonOverviewHandler;
-import controller.products.AddProductHandler;
-import controller.products.DeleteProductHandler;
-import controller.products.ProductOverviewHandler;
-
 import controller.CustomRedirectException;
+import controller.persons.*;
+import controller.products.*;
 
 import domain.NotAuthorizedException;
 import domain.PersonService;
@@ -41,6 +34,7 @@ public class ControllerFactory {
 		handlers.put("products", new ProductOverviewHandler(productModel));
 		handlers.put("addProduct", new AddProductHandler(productModel));
 		handlers.put("deleteProduct", new DeleteProductHandler(productModel));
+		handlers.put("editProduct", new ChangeProductHandler(productModel));
 	}
 	public String handleAction(HttpServletRequest request,HttpServletResponse response) {
 		String action = request.getParameter("action");
