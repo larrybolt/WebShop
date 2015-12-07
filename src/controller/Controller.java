@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.protobuf.ServiceException;
+
+import controller.CustomRedirectException;
 
 import domain.NotAuthorizedException;
 import domain.Person;
@@ -40,7 +41,6 @@ public class Controller extends HttpServlet {
 		//products = new ProductService();
 		//persons = new PersonService();
 	}
-
 
 	public void destroy() {
 	}
@@ -80,14 +80,14 @@ public class Controller extends HttpServlet {
 		
 		response.addCookie(c);
 		request.setAttribute("counter", c.getValue());
-		String destination = "index.jsp";
-		
-			
-		destination = new ControllerFactory(persons, products).handleAction(request, response);		
-		
-		
-		RequestDispatcher view = request.getRequestDispatcher(destination);
-		view.forward(request, response);
+		String destination;
+		try {
+			destination = new ControllerFactory(persons, products).handleAction(request, response);
+			RequestDispatcher view = request.getRequestDispatcher(destination);
+			view.forward(request, response);
+		} catch (CustomRedirectException redirect) {
+			response.sendRedirect(redirect.getLocation());
+		}
 	}
 	private void SessionHandler(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
@@ -110,5 +110,3 @@ public class Controller extends HttpServlet {
 	
 	
 }
-
-	
