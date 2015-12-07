@@ -1,8 +1,9 @@
-package controller;
+package controller.persons;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.RequestHandler;
 import domain.PersonService;
 
 public class PersonOverviewHandler implements RequestHandler {

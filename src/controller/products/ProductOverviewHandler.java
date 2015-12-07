@@ -1,8 +1,9 @@
-package controller;
+package controller.products;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.RequestHandler;
 import domain.ProductService;
 
 public class ProductOverviewHandler implements RequestHandler{

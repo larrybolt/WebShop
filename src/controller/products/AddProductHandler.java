@@ -1,14 +1,15 @@
-package controller;
+package controller.products;
 
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.RequestHandler;
 import domain.Product;
 import domain.ProductService;
 
-public class AddProductHandler {
+public class AddProductHandler implements RequestHandler {
 	
 	private ProductService productModel;
 	
@@ -16,6 +17,9 @@ public class AddProductHandler {
 		this.productModel = productModel;
 	}
 	public String handle(HttpServletRequest request, HttpServletResponse response){
+		if (request.getMethod().equals("GET")){
+			return "products/create.jsp";
+		}
 		ArrayList<String> errorMsg = new ArrayList<String>();
 		String name = request.getParameter("name");
 		double price = Double.parseDouble(request.getParameter("price"));
@@ -30,5 +34,4 @@ public class AddProductHandler {
 		}
 		return new ProductOverviewHandler(productModel).handle(request, response);
 	}
-
 }

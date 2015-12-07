@@ -15,17 +15,16 @@
 		<h1><span>User Management System</span></h1>
 		<nav>
 			<ul>
-				
 				<li class="<c:out value="${empty param['action'] ? 'current' : ''}"/>"><a href="Controller">Home</a></li>
 
-				<li class="<c:out value="${param['action'] == 'overview' ? 'current' : ''}"/>">
-					<a href="Controller?action=overview">Overview</a>
+				<li class="<c:out value="${param['action'] == 'persons' ? 'current' : ''}"/>">
+					<a href="Controller?action=persons">Persons</a>
 				</li>
 				<li class="<c:out value="${param['action'] == 'products' ? 'current' : ''}"/>">
 					<a href="Controller?action=products">Products</a>
 				</li>
-				<li class="<c:out value="${param['action'] == 'signUp' ? 'current' : ''}"/>">
-					<a href="Controller?action=signUp">Sign up</a>
+				<li class="<c:out value="${param['action'] == 'addPerson' ? 'current' : ''}"/>">
+					<a href="Controller?action=addPerson">Sign up</a>
 				</li>
 			</ul>
 		</nav>
@@ -41,8 +40,6 @@
 			<a href="Controller?action=logout">logout</a>
 		</div>
 		</c:if>
-		
-		
 	<h2>
 		<c:if test="${empty param['action']}">
 		Home

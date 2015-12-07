@@ -1,10 +1,11 @@
-package controller;
+package controller.products;
 
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.RequestHandler;
 import domain.Product;
 import domain.ProductService;
 

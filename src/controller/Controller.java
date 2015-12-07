@@ -41,7 +41,6 @@ public class Controller extends HttpServlet {
 		//persons = new PersonService();
 	}
 
-
 	public void destroy() {
 	}
 
@@ -81,11 +80,7 @@ public class Controller extends HttpServlet {
 		response.addCookie(c);
 		request.setAttribute("counter", c.getValue());
 		String destination;
-		try {
-			destination = new ControllerFactory(persons, products).handleAction(request, response);
-		} catch (ServiceException e) {
-			destination = "index.jsp";
-		}
+		destination = new ControllerFactory(persons, products).handleAction(request, response);
 		
 		
 		RequestDispatcher view = request.getRequestDispatcher(destination);
@@ -111,5 +106,3 @@ public class Controller extends HttpServlet {
 	}
 	
 }
-
-	

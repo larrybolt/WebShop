@@ -8,32 +8,45 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.protobuf.ServiceException;
-
+import controller.persons.AddPersonHandler;
+import controller.persons.DeletePersonHandler;
+import controller.persons.LoginHandler;
+import controller.persons.LogoutHandler;
+import controller.persons.PersonOverviewHandler;
+import controller.products.AddProductHandler;
+import controller.products.DeleteProductHandler;
+import controller.products.ProductOverviewHandler;
 import domain.NotAuthorizedException;
 import domain.PersonService;
-import domain.PersonType;
 import domain.ProductService;
 
 public class ControllerFactory {
 	private Map<String, RequestHandler> handlers = new HashMap<>();
 	
 	
-	public ControllerFactory(PersonService personModel, ProductService productModel )throws ServiceException{
-		handlers.put("overview", new PersonOverviewHandler(personModel));
-		handlers.put("producten", new ProductOverviewHandler(productModel));
-		handlers.put("add", new AddPersonHandler(personModel));
-		handlers.put("addProduct", new AddPersonHandler(personModel));	
+	public ControllerFactory(PersonService personModel, ProductService productModel) {
+		// persons
+		// management
+		handlers.put("persons", new PersonOverviewHandler(personModel));
+		handlers.put("addPerson", new AddPersonHandler(personModel));
+		handlers.put("deletePerson", new DeletePersonHandler(personModel));
+		// methods
+		handlers.put("login", new LoginHandler(personModel));
+		handlers.put("logout", new LogoutHandler());
+
+		// products
+		handlers.put("products", new ProductOverviewHandler(productModel));
+		handlers.put("addProduct", new AddProductHandler(productModel));
+		handlers.put("deleteProduct", new DeleteProductHandler(productModel));
 	}
 	public String handleAction(HttpServletRequest request,HttpServletResponse response){
 		String action = request.getParameter("action");
 		if (action == null) {
-			return"index.jsp";
+			return "index.jsp";
 		}
 		try{
 			RequestHandler handler= handlers.get(action);
-			handler.handle(request,response);
-			
+			return handler.handle(request,response);
 		}
 		catch(NotAuthorizedException e ){
 			List<String> errors = new ArrayList<String>();
@@ -41,11 +54,5 @@ public class ControllerFactory {
 			request.setAttribute("errors", errors);
 			return "index.jsp";
 		}
-		return "index.jsp";
 	}
-	
-	
-	
-	
-	
 }
