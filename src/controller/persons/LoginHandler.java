@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controller.CustomRedirectException;
 import controller.RequestHandler;
 import domain.Person;
 import domain.PersonService;
@@ -16,7 +17,7 @@ public class LoginHandler implements RequestHandler {
 	public LoginHandler(PersonService personModel){
 		this.personModel= personModel;
 	}
-	public String handle(HttpServletRequest request, HttpServletResponse response){
+	public String handle(HttpServletRequest request, HttpServletResponse response) throws CustomRedirectException {
 		if (request.getMethod().equals("GET")){
 			return "persons/login.jsp";
 		}
@@ -28,7 +29,10 @@ public class LoginHandler implements RequestHandler {
 			HttpSession session = request.getSession();
 			session.setAttribute("person", user);
 			request.setAttribute("sessionPerson", user);
-			return "index.jsp";
+			throw new CustomRedirectException("");
+		}
+		catch(CustomRedirectException e){
+			throw e;
 		}
 		catch(Exception e){
 			errorMsg.add(e.getMessage());

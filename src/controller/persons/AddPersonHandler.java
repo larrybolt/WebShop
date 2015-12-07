@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.CustomRedirectException;
 import controller.RequestHandler;
 import domain.Person;
 import domain.PersonService;
@@ -30,8 +31,7 @@ public class AddPersonHandler implements RequestHandler {
 		try{
 			Person p = new Person(email, password,firstName, lastName, woonplaats, type);
 			personModel.addPerson(p);
-			return new PersonOverviewHandler(personModel).handle(request, response);
-			
+			throw new CustomRedirectException("");
 		}
 		catch(Exception e){
 			errorMsg.add(e.getMessage());

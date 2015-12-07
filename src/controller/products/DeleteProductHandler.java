@@ -3,6 +3,7 @@ package controller.products;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.CustomRedirectException;
 import controller.RequestHandler;
 import domain.ProductService;
 
@@ -19,6 +20,6 @@ public class DeleteProductHandler implements RequestHandler {
 		} 
 
 		productModel.deleteProduct(request.getParameter("id"));
-		return new ProductOverviewHandler(productModel).handle(request, response);
+		throw new CustomRedirectException("?action=products");
 	}
 }
