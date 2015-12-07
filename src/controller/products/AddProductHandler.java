@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.CustomRedirectException;
 import controller.RequestHandler;
 import domain.Product;
 import domain.ProductService;
@@ -32,6 +33,6 @@ public class AddProductHandler implements RequestHandler {
 			request.setAttribute("errorMsg", errorMsg);
 			return "products/create.jsp";
 		}
-		return new ProductOverviewHandler(productModel).handle(request, response);
+		throw new CustomRedirectException("?action=products");
 	}
 }

@@ -5,5 +5,5 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface RequestHandler {
 	
-	public String handle(HttpServletRequest request, HttpServletResponse response);
+	public String handle(HttpServletRequest request, HttpServletResponse response) throws CustomRedirectException;
 }

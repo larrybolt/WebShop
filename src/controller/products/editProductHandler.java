@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.CustomRedirectException;
 import controller.RequestHandler;
 import domain.Product;
 import domain.ProductService;
@@ -28,6 +29,7 @@ public class editProductHandler implements RequestHandler{
 				p.setPrice(price);
 				p.setImgUrl(ImgUrl);
 				productModel.updateProducts(p);
+				throw new CustomRedirectException("?action=products");
 			}
 			catch(Exception e){
 				errorMsg.add(e.getMessage());

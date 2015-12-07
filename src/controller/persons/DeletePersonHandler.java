@@ -3,6 +3,7 @@ package controller.persons;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controller.CustomRedirectException;
 import controller.RequestHandler;
 import domain.PersonService;
 
@@ -19,6 +20,6 @@ public class DeletePersonHandler implements RequestHandler {
 			return "persons/confirmDelete.jsp";
 		}
 		personModel.deletePerson(request.getParameter("id"));
-		return new PersonOverviewHandler(personModel).handle(request, response);
+		throw new CustomRedirectException("?action=persons");
 	}
 }

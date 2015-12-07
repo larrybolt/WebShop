@@ -16,6 +16,9 @@ import controller.persons.PersonOverviewHandler;
 import controller.products.AddProductHandler;
 import controller.products.DeleteProductHandler;
 import controller.products.ProductOverviewHandler;
+
+import controller.CustomRedirectException;
+
 import domain.NotAuthorizedException;
 import domain.PersonService;
 import domain.ProductService;
@@ -39,7 +42,7 @@ public class ControllerFactory {
 		handlers.put("addProduct", new AddProductHandler(productModel));
 		handlers.put("deleteProduct", new DeleteProductHandler(productModel));
 	}
-	public String handleAction(HttpServletRequest request,HttpServletResponse response){
+	public String handleAction(HttpServletRequest request,HttpServletResponse response) {
 		String action = request.getParameter("action");
 		if (action == null) {
 			return "index.jsp";
@@ -47,6 +50,9 @@ public class ControllerFactory {
 		try{
 			RequestHandler handler= handlers.get(action);
 			return handler.handle(request,response);
+		}
+		catch (CustomRedirectException e){
+			throw new CustomRedirectException(e.getLocation());
 		}
 		catch(NotAuthorizedException e ){
 			List<String> errors = new ArrayList<String>();
