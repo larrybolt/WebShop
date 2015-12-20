@@ -7,15 +7,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.CustomRedirectException;
 import controller.RequestHandler;
-import domain.Product;
-import domain.ProductService;
+import domain.ShopFacade;
+import domain.product.Product;
 
 public class AddProductHandler implements RequestHandler {
 	
-	private ProductService productModel;
+	private ShopFacade shop;
 	
-	public AddProductHandler(ProductService productModel){
-		this.productModel = productModel;
+	public AddProductHandler(ShopFacade shop){
+		this.shop = shop;
 	}
 	public String handle(HttpServletRequest request, HttpServletResponse response){
 		if (request.getMethod().equals("GET")){
@@ -25,8 +25,8 @@ public class AddProductHandler implements RequestHandler {
 		String name = request.getParameter("name");
 		double price = Double.parseDouble(request.getParameter("price"));
 		String ImgUrl = request.getParameter("ImgUrl");
-		try{
-			productModel.addProduct(new Product(name,price,ImgUrl));
+		try {
+			shop.addProduct(new Product(name,price,ImgUrl));
 		}
 		catch(Exception e){
 			errorMsg.add(e.getMessage());

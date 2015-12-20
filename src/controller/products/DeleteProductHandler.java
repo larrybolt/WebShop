@@ -5,21 +5,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.CustomRedirectException;
 import controller.RequestHandler;
-import domain.ProductService;
+import domain.ShopFacade;
 
 public class DeleteProductHandler implements RequestHandler {
-	private ProductService productModel;
+	private ShopFacade shop;
 	
-	public DeleteProductHandler(ProductService productModel){
-		this.productModel=productModel;
+	public DeleteProductHandler(ShopFacade shop){
+		this.shop = shop;
 	}
 	public String handle(HttpServletRequest request,HttpServletResponse response ){
 		if (request.getMethod().equals("GET")) {
-			request.setAttribute("product", productModel.getProduct(request.getParameter("id")));
+			request.setAttribute("product", shop.getProduct(request.getParameter("id")));
 			return "products/confirmDelete.jsp";
 		} 
 
-		productModel.deleteProduct(request.getParameter("id"));
+		shop.removeProduct(Integer.parseInt(request.getParameter("id")));
 		throw new CustomRedirectException("?action=products");
 	}
 }

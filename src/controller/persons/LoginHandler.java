@@ -8,14 +8,14 @@ import javax.servlet.http.HttpSession;
 
 import controller.CustomRedirectException;
 import controller.RequestHandler;
-import domain.Person;
-import domain.PersonService;
+import domain.ShopFacade;
+import domain.person.Person;
 
 public class LoginHandler implements RequestHandler {
-	private PersonService personModel;
+	private ShopFacade shop;
 	
-	public LoginHandler(PersonService personModel){
-		this.personModel= personModel;
+	public LoginHandler(ShopFacade shop){
+		this.shop = shop;
 	}
 	public String handle(HttpServletRequest request, HttpServletResponse response) throws CustomRedirectException {
 		if (request.getMethod().equals("GET")){
@@ -25,7 +25,7 @@ public class LoginHandler implements RequestHandler {
 		String email = request.getParameter("email");
 		String password =  request.getParameter("password");
 		try{
-			Person user = personModel.authenticate(email, password);
+			Person user = shop.authenticate(email, password);
 			HttpSession session = request.getSession();
 			session.setAttribute("person", user);
 			request.setAttribute("sessionPerson", user);

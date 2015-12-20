@@ -7,17 +7,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.CustomRedirectException;
 import controller.RequestHandler;
-import domain.Person;
-import domain.PersonService;
-import domain.PersonType;
+import domain.ShopFacade;
+import domain.person.Person;
+import domain.person.PersonType;
 
 public class AddPersonHandler implements RequestHandler {
-	private PersonService personModel;
+	private ShopFacade shop;
 	
-	public AddPersonHandler(PersonService personModel){
-		this.personModel = personModel;
+	public AddPersonHandler(ShopFacade shop){
+		this.shop = shop;
 	}
-	public String handle(HttpServletRequest request, HttpServletResponse response){
+	public String handle(HttpServletRequest request, HttpServletResponse response) throws CustomRedirectException {
 		if (request.getMethod().equals("GET")){
 			return "persons/signUp.jsp";
 		}
@@ -30,14 +30,14 @@ public class AddPersonHandler implements RequestHandler {
 		PersonType type = PersonType.CUSTOMER;
 		try{
 			Person p = new Person(email, password,firstName, lastName, woonplaats, type);
-			personModel.addPerson(p);
+			shop.addPerson(p);
 			throw new CustomRedirectException("");
+		}
+		catch(CustomRedirectException e){
+			throw e;
 		}
 		catch(Exception e){
 			errorMsg.add(e.getMessage());
-		}
-		if(errorMsg.size()==0){
-			return new PersonOverviewHandler(personModel).handle(request, response);
 		}
 		request.setAttribute("errorMsg", errorMsg);
 		return "persons/signUp.jsp";

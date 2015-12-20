@@ -7,18 +7,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.CustomRedirectException;
 import controller.RequestHandler;
-import domain.Product;
-import domain.ProductService;
+import domain.ShopFacade;
+import domain.product.Product;
 
 public class ChangeProductHandler implements RequestHandler{
-	private ProductService productModel;
+	private ShopFacade shop;
 	
-	public ChangeProductHandler(ProductService productModel){
-		this.productModel = productModel;
+	public ChangeProductHandler(ShopFacade shop){
+		this.shop = shop;
 	}
 	public String handle(HttpServletRequest request, HttpServletResponse response){
 		if (request.getMethod().equals("GET")) {
-			request.setAttribute("product", productModel.getProduct(request.getParameter("id")));
+			request.setAttribute("product", shop.getProduct(request.getParameter("id")));
 			return "products/edit.jsp";
 		} 
 		ArrayList<String> errorMsg = new ArrayList<String>();
@@ -28,11 +28,11 @@ public class ChangeProductHandler implements RequestHandler{
 		try {
 			Double price = Double.parseDouble(request.getParameter("price"));
 			try{
-				Product p = productModel.getProduct(id);
+				Product p = shop.getProduct(id);
 				p.setName(name);
 				p.setPrice(price);
 				p.setImgUrl(ImgUrl);
-				productModel.updateProducts(p);
+				shop.updateProducts(p);
 			}
 			catch(Exception e){
 				errorMsg.add(e.getMessage());

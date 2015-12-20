@@ -5,21 +5,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.CustomRedirectException;
 import controller.RequestHandler;
-import domain.PersonService;
+import domain.ShopFacade;
 
 public class DeletePersonHandler implements RequestHandler {
-	private PersonService personModel;
+	private ShopFacade shop;
 	
-	public DeletePersonHandler(PersonService personModel){
-		this.personModel = personModel;
+	public DeletePersonHandler(ShopFacade shop){
+		this.shop = shop;
 	}
 	@Override
 	public String handle(HttpServletRequest request, HttpServletResponse response){
 		if (request.getMethod().equals("GET")){
-			request.setAttribute("person", personModel.getPerson(request.getParameter("id")));
+			request.setAttribute("person", shop.getPerson(Integer.parseInt(request.getParameter("id"))));
 			return "persons/confirmDelete.jsp";
 		}
-		personModel.deletePerson(request.getParameter("id"));
+		shop.deletePerson(request.getParameter("id"));
 		throw new CustomRedirectException("?action=persons");
 	}
 }

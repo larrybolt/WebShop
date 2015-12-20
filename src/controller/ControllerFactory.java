@@ -13,40 +13,47 @@ import controller.persons.*;
 import controller.products.*;
 
 import domain.NotAuthorizedException;
-import domain.PersonService;
-import domain.ProductService;
+import domain.ShopFacade;
 
 public class ControllerFactory {
 	private Map<String, RequestHandler> handlers = new HashMap<>();
 	
 	
-	public ControllerFactory(PersonService personModel, ProductService productModel) {
+	public ControllerFactory(ShopFacade shop) {
 		// persons
 		// management
-		handlers.put("persons", new PersonOverviewHandler(personModel));
-		handlers.put("addPerson", new AddPersonHandler(personModel));
-		handlers.put("deletePerson", new DeletePersonHandler(personModel));
+		handlers.put("persons", new PersonOverviewHandler(shop));
+		handlers.put("addPerson", new AddPersonHandler(shop));
+		handlers.put("deletePerson", new DeletePersonHandler(shop));
 		// methods
-		handlers.put("login", new LoginHandler(personModel));
+		handlers.put("login", new LoginHandler(shop));
 		handlers.put("logout", new LogoutHandler());
 
 		// products
-		handlers.put("products", new ProductOverviewHandler(productModel));
-		handlers.put("addProduct", new AddProductHandler(productModel));
-		handlers.put("deleteProduct", new DeleteProductHandler(productModel));
-		handlers.put("editProduct", new ChangeProductHandler(productModel));
+		handlers.put("products", new ProductOverviewHandler(shop));
+		handlers.put("addProduct", new AddProductHandler(shop));
+		handlers.put("deleteProduct", new DeleteProductHandler(shop));
+		handlers.put("editProduct", new ChangeProductHandler(shop));
 	}
-	public String handleAction(HttpServletRequest request,HttpServletResponse response) {
-		String action = request.getParameter("action");
-		if (action == null) {
+	public String handleAction(HttpServletRequest request, HttpServletResponse response) {
+		// if no action parameter, just return index
+		if (!request.getParameterMap().containsKey("action")){
 			return "index.jsp";
 		}
+		String action = request.getParameter("action");
+		if (action == null || action.length() == 0) {
+			// is action parameter exists, but is empty remove from path
+			throw new CustomRedirectException("");
+		}
 		try{
-			RequestHandler handler= handlers.get(action);
+			RequestHandler handler = handlers.get(action);
 			return handler.handle(request,response);
 		}
 		catch (CustomRedirectException e){
 			throw new CustomRedirectException(e.getLocation());
+		}
+		catch (NullPointerException e){
+			return "404.jsp";
 		}
 		catch(NotAuthorizedException e ){
 			List<String> errors = new ArrayList<String>();

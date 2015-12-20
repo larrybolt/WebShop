@@ -17,29 +17,22 @@ import javax.servlet.http.HttpSession;
 import controller.CustomRedirectException;
 
 import domain.NotAuthorizedException;
-import domain.Person;
-import domain.PersonService;
-import domain.PersonType;
-import domain.Product;
-import domain.ProductService;
+import domain.ShopFacade;
+import domain.person.Person;
 
 @WebServlet("/Controller")	
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private PersonService persons;
-	private ProductService products;
+	private ShopFacade shop;
        
 	public Controller() {
         super();
     }
 
 	public void init(ServletConfig config) throws ServletException {
-		products = new ProductService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
-		persons = new PersonService(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
-		
+		shop = new ShopFacade(config.getServletContext().getResourceAsStream("/WEB-INF/config.xml"));
 		// using maps instead db
-		//products = new ProductService();
-		//persons = new PersonService();
+		//shop = new ShopFacade();
 	}
 
 	public void destroy() {
@@ -82,7 +75,7 @@ public class Controller extends HttpServlet {
 		request.setAttribute("counter", c.getValue());
 		String destination;
 		try {
-			destination = new ControllerFactory(persons, products).handleAction(request, response);
+			destination = new ControllerFactory(shop).handleAction(request, response);
 			RequestDispatcher view = request.getRequestDispatcher(destination);
 			view.forward(request, response);
 		} catch (CustomRedirectException redirect) {
