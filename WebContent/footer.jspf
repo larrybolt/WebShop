@@ -1,6 +1,10 @@
 <footer>
-	
 	&copy; Webontwikkeling 3, UC Leuven-Limburg
+	<a href="Controller?action=lang&l=nl">nl</a>
+	<a href="Controller?action=lang&l=en">en</a>
+	<a href="Controller?action=lang&l=fr">fr</a>
+	<br>
+	current language: ${language}
 </footer>
 </div>
 </body>

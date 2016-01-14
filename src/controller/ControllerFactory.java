@@ -34,6 +34,9 @@ public class ControllerFactory {
 		handlers.put("addProduct", new AddProductHandler(shop));
 		handlers.put("deleteProduct", new DeleteProductHandler(shop));
 		handlers.put("editProduct", new ChangeProductHandler(shop));
+
+		// languages
+		handlers.put("lang", new ChangeLangHandler(shop));
 	}
 	public String handleAction(HttpServletRequest request, HttpServletResponse response) {
 		// if no action parameter, just return index

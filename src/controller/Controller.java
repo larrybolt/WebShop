@@ -65,6 +65,9 @@ public class Controller extends HttpServlet {
 					c = cookies[i];
 					cookieFound = true;
 				}
+				if(cookies[i].getName().equals("lang")){
+					request.setAttribute("language", cookies[i].getValue());
+				}
 			} 
 		}	
 		if(!cookieFound){
